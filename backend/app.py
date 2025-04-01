@@ -43,13 +43,37 @@ def api_associations():
     ids = associations_df['id'].tolist()
     return ids, 200
 
+## Détails d'une association
+
+# * Endpoint : `/api/association/<int:id>`
+# * Méthode : GET
+# * Description : Retourne les détails d'une association spécifique par son ID.
+# * Réponse :
+#   + 200 OK : Détails de l'association demandée.
+#   + 404 Not Found : { "error": "Association not found" }
+
 @app.route('/api/association/<int:id>', methods=['GET'])
 def description(id):
     row = associations_df[associations_df['id'] == id]
     if not row.empty:
         r = row.iloc[0]
-        return {"description": int(r['description'])}
-    return { "error": "Association not found" }, 404
+        return {
+            "id": int(r['id']),
+            "nom": r['nom'],
+            "type": r['type'],
+            "description": r['description']
+        }, 200
+    return { "error": "Event not found" }, 404
+
+
+## Liste de tous les événements
+
+# * Endpoint : `/api/evenements`
+# * Méthode : GET
+# * Description : Retourne une liste de tous les événements.
+# * Réponse :
+#   + 200 OK : Liste des ids des événements.
+
 
 @app.route('/api/evenements', methods=['GET'])
 def events():
@@ -66,7 +90,7 @@ def events():
 #   + 200 OK : Détails de l'événement demandé.
 #   + 404 Not Found : { "error": "Event not found" }
 
-@app.route('/api/event/<int:id>', methods=['GET'])
+@app.route('/api/evenement/<int:id>', methods=['GET'])
 def description2(id):
     row = evenements_df[evenements_df['id'] == id]
     if not row.empty:

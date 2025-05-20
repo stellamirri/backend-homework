@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+            integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+            crossorigin="anonymous"> </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- the socket.io library is used to connect to the ws endpoints on the server -->
+        
+</head>
+ <body>
+    <h1>Notes</h1>
+    <div id="notes">
+        {% for note in notes %}
+            <div class="note">
+                <h2>{{ note.title }}</h2>
+                <p>{{ note.content }}</p>
+                <form method="POST">
+                    <label for="note-{{ note.id }}">done</label>
+                    <input
+                        type="checkbox"
+                        {% if note.done %} checked {% endif %}
+                        data-id="{{ note.id }}"
+                    >
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
